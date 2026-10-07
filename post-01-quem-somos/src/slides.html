@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --base:#001524; --surface:#001e33; --navy:#003052; --card:#02385e;
+    --sublime:#075384; --ceu:#2779b4; --teal:#308ba2; --ambar:#f19f00; --amarelo:#f8b816;
+    --gelo:#e4f3fa; --muted:#8fb6cf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1350px;overflow:hidden;background:var(--base)}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;color:#fff}
+  .slide{display:none;position:relative;width:1080px;height:1350px;padding:96px 88px;overflow:hidden;
+    background:radial-gradient(900px 700px at 100% 0%, rgba(39,121,180,.28), transparent 60%),
+               radial-gradient(800px 600px at 0% 100%, rgba(48,139,162,.22), transparent 60%),
+               var(--base)}
+  .slide.on{display:flex;flex-direction:column}
+  .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(228,243,250,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(228,243,250,.035) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+  .top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+  .mini-logo{height:64px}
+  .count{font-size:26px;font-weight:600;color:var(--muted);letter-spacing:.08em}
+  .eyebrow{display:flex;align-items:center;gap:18px;font-size:26px;font-weight:700;letter-spacing:.16em;color:var(--amarelo);text-transform:uppercase}
+  .eyebrow::before{content:"";width:56px;height:4px;border-radius:4px;background:var(--amarelo)}
+  h1{font-size:96px;line-height:1.02;font-weight:900;letter-spacing:-.035em}
+  h2{font-size:76px;line-height:1.05;font-weight:850;font-weight:800;letter-spacing:-.03em}
+  .hl{color:var(--amarelo)}
+  .tl{color:#5fc3d9}
+  p.lead{font-size:38px;line-height:1.38;color:var(--gelo);font-weight:400}
+  .body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 0 40px}
+  .foot{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;font-size:26px;color:var(--muted);font-weight:500}
+  .swipe{display:flex;align-items:center;gap:14px;color:#fff;font-weight:700;font-size:28px;background:rgba(228,243,250,.08);border:1px solid rgba(228,243,250,.14);padding:18px 30px;border-radius:999px}
+  .swipe b{color:var(--amarelo);font-size:34px;line-height:1}
+
+  /* slide 1 */
+  .s1 .body{gap:40px;padding:24px 0 32px}
+  .s1 h1{font-size:88px}
+  .s1 .big-logo{width:420px}
+  .chips{display:flex;flex-wrap:wrap;gap:16px}
+  .chip{font-size:28px;font-weight:600;padding:14px 26px;border-radius:999px;border:1.5px solid rgba(95,195,217,.45);color:var(--gelo);background:rgba(48,139,162,.12)}
+
+  /* slide 2 */
+  .phone-wrap{display:flex;gap:28px;align-items:stretch}
+  .card{background:linear-gradient(180deg,rgba(2,56,94,.85),rgba(0,30,51,.9));border:1px solid rgba(228,243,250,.1);border-radius:36px;padding:44px 44px}
+  .card h3{font-size:40px;font-weight:800;margin-bottom:14px;letter-spacing:-.02em}
+  .card p{font-size:30px;line-height:1.4;color:var(--gelo)}
+  .x{color:#ff8a7a}.ok{color:#6fe0b0}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .vs ul{list-style:none;display:flex;flex-direction:column;gap:22px;margin-top:10px}
+  .vs li{font-size:30px;line-height:1.3;color:var(--gelo);display:flex;gap:14px}
+  .vs li span:first-child{font-weight:800;flex:none}
+  .card.good{border-color:rgba(248,184,22,.55);box-shadow:0 0 0 1px rgba(248,184,22,.25),0 30px 80px rgba(241,159,0,.12)}
+
+  /* slide 3 */
+  .svc{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .svc .card{padding:40px 38px;display:flex;flex-direction:column;gap:14px}
+  .num{font-size:24px;font-weight:800;color:var(--amarelo);letter-spacing:.1em}
+  .svc .card h3{margin:0;font-size:38px}
+  .svc .card p{font-size:28px}
+  .ico{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:rgba(39,121,180,.25);border:1px solid rgba(95,195,217,.35)}
+  .ico svg{width:34px;height:34px;stroke:#7fd3e6}
+
+  /* slide 4 */
+  .shots{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .shot{border-radius:26px;overflow:hidden;background:var(--card);border:1px solid rgba(228,243,250,.12)}
+  .shot img{display:block;width:100%;aspect-ratio:1376/768;object-fit:cover;object-position:left top}
+  .shot .cap{padding:18px 24px 20px}
+  .shot .cap b{display:block;font-size:30px;font-weight:800;letter-spacing:-.01em}
+  .shot .cap span{font-size:24px;color:var(--muted);font-weight:500}
+
+  /* slide 5 */
+  .steps{display:flex;flex-direction:column;gap:0;position:relative}
+  .step{display:flex;gap:34px;align-items:flex-start;padding:20px 0;position:relative}
+  .step .dot{flex:none;width:88px;height:88px;border-radius:50%;display:grid;place-items:center;font-size:34px;font-weight:900;color:var(--base);background:var(--amarelo);position:relative;z-index:1}
+  .step:not(:last-child)::after{content:"";position:absolute;left:43px;top:108px;bottom:-20px;width:3px;background:linear-gradient(var(--amarelo),rgba(248,184,22,.15))}
+  .step h3{font-size:42px;font-weight:800;margin:6px 0 8px;letter-spacing:-.02em}
+  .step p{font-size:28px;line-height:1.4;color:var(--gelo)}
+
+  /* slide 6 */
+  .s6 .body{align-items:center;text-align:center}
+  .s6 .big-logo{width:470px}
+  .cta{display:inline-flex;align-items:center;gap:20px;background:var(--ambar);color:var(--base);font-size:40px;font-weight:800;padding:30px 54px;border-radius:999px;box-shadow:0 24px 70px rgba(241,159,0,.35)}
+  .cta svg{width:46px;height:46px}
+  .contact{font-size:34px;color:var(--gelo);line-height:1.6}
+  .contact b{color:#fff}
+</style>
+</head>
+<body>
+
+<!-- 1 · CAPA -->
+<section class="slide s1" data-s="1">
+  <div class="grid-bg"></div>
+  <div class="top"><span class="count">@solucoes.sublimese</span><span class="count">01/06</span></div>
+  <div class="body">
+    <img class="big-logo" src="img/logo.png" alt="">
+    <div class="eyebrow">Muito prazer, somos a Sublime-se</div>
+    <h1>O seu negócio merece uma presença digital <span class="hl">à sua altura.</span></h1>
+    <div class="chips"><span class="chip">Websites</span><span class="chip">Landing pages</span><span class="chip">Automações</span><span class="chip">WhatsApp &amp; Instagram</span></div>
+  </div>
+  <div class="foot"><span>Soluções digitais para pequenos negócios</span><span class="swipe">Deslize <b>→</b></span></div>
+</section>
+
+<!-- 2 · O PROBLEMA -->
+<section class="slide s2" data-s="2">
+  <div class="grid-bg"></div>
+  <div class="top"><img class="mini-logo" src="img/logo.png" alt=""><span class="count">02/06</span></div>
+  <div class="body">
+    <div class="eyebrow">Porquê um website?</div>
+    <h2>Só o perfil no Instagram <span class="hl">não basta.</span></h2>
+    <div class="vs">
+      <div class="card">
+        <h3>Só redes sociais</h3>
+        <ul>
+          <li><span class="x">✕</span><span>O cliente pesquisa no Google e não o encontra</span></li>
+          <li><span class="x">✕</span><span>Informação perdida entre publicações</span></li>
+          <li><span class="x">✕</span><span>Pedidos e orçamentos só por mensagem privada</span></li>
+        </ul>
+      </div>
+      <div class="card good">
+        <h3>Com a <span class="hl">Sublime-se</span></h3>
+        <ul>
+          <li><span class="ok">✓</span><span>O seu negócio aparece no Google</span></li>
+          <li><span class="ok">✓</span><span>Serviços, preços e contactos num só lugar</span></li>
+          <li><span class="ok">✓</span><span>Visitas que se tornam conversas no WhatsApp</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Continua →</span><span></span></div>
+</section>
+
+<!-- 3 · O QUE FAZEMOS -->
+<section class="slide s3" data-s="3">
+  <div class="grid-bg"></div>
+  <div class="top"><img class="mini-logo" src="img/logo.png" alt=""><span class="count">03/06</span></div>
+  <div class="body">
+    <div class="eyebrow">O que fazemos</div>
+    <h2>Do primeiro clique <span class="tl">ao cliente</span> no WhatsApp.</h2>
+    <div class="svc">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Websites</h3><p>Modernos, rápidos e perfeitos no telemóvel.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Landing pages</h3><p>Uma página feita para gerar contactos e vendas.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/></svg></div><h3>Automações</h3><p>Contactos do Instagram diretamente no WhatsApp e respostas automáticas.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div><h3>Dados &amp; SEO</h3><p>Dashboards, Google Analytics e um website que aparece no Google.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Continua →</span><span></span></div>
+</section>
+
+<!-- 4 · PROJETOS -->
+<section class="slide s4" data-s="4">
+  <div class="grid-bg"></div>
+  <div class="top"><img class="mini-logo" src="img/logo.png" alt=""><span class="count">04/06</span></div>
+  <div class="body">
+    <div class="eyebrow">Projetos entregues</div>
+    <h2>Feito para <span class="hl">negócios a sério.</span></h2>
+    <div class="shots">
+      <div class="shot"><img src="img/glamuor.jpg" alt=""><div class="cap"><b>Glamuor Flor Salão</b><span>Landing page · Cabeleireiro</span></div></div>
+      <div class="shot"><img src="img/elias_lanches.jpg" alt=""><div class="cap"><b>Elias Lanches</b><span>Menu digital · Hamburgueria</span></div></div>
+      <div class="shot"><img src="img/violetribute.jpg" alt=""><div class="cap"><b>Violetribute</b><span>Website empresarial · Limpezas</span></div></div>
+      <div class="shot"><img src="img/euro_wine.jpg" alt=""><div class="cap"><b>Euro Wine Experience</b><span>Montra digital · Vinhos</span></div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Continua →</span><span></span></div>
+</section>
+
+<!-- 5 · COMO FUNCIONA -->
+<section class="slide s5" data-s="5">
+  <div class="grid-bg"></div>
+  <div class="top"><img class="mini-logo" src="img/logo.png" alt=""><span class="count">05/06</span></div>
+  <div class="body">
+    <div class="eyebrow">Como funciona</div>
+    <h2>Simples: da conversa <span class="tl">ao website online.</span></h2>
+    <div class="steps">
+      <div class="step"><div class="dot">1</div><div><h3>Conversamos</h3><p>Percebemos o seu negócio e o que o seu cliente precisa de ver. Uma conversa real, sem formulários genéricos.</p></div></div>
+      <div class="step"><div class="dot">2</div><div><h3>Planeamos</h3><p>Estrutura, conteúdo e experiência definidos antes de qualquer linha de código.</p></div></div>
+      <div class="step"><div class="dot">3</div><div><h3>Construímos</h3><p>Acompanha o progresso durante todo o desenvolvimento.</p></div></div>
+      <div class="step"><div class="dot">4</div><div><h3>Publicamos</h3><p>Testamos tudo no telemóvel e no computador. Depois, é só pôr online.</p></div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Continua →</span><span></span></div>
+</section>
+
+<!-- 6 · CTA -->
+<section class="slide s6" data-s="6">
+  <div class="grid-bg"></div>
+  <div class="top"><span class="count"></span><span class="count">06/06</span></div>
+  <div class="body">
+    <img class="big-logo" src="img/logo.png" alt="">
+    <h2>Vamos pôr o seu negócio <span class="hl">online?</span></h2>
+    <p class="lead">Conte-nos o que precisa.<br>A conversa é sem compromisso.</p>
+    <span class="cta"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88"/></svg>Fale connosco no WhatsApp</span>
+    <p class="contact">Envie-nos uma <b>mensagem privada</b><br>ou use o <b>link na bio</b></p>
+  </div>
+  <div class="foot"><span>Sublime-se Soluções</span><span>@solucoes.sublimese</span></div>
+</section>
+
+<script>
+  const s = new URLSearchParams(location.search).get('s') || '1';
+  document.querySelector('.slide[data-s="'+s+'"]').classList.add('on');
+</script>
+</body>
+</html>
